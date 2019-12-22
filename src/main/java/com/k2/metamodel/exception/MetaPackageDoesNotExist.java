@@ -6,11 +6,15 @@ public class MetaPackageDoesNotExist extends MetaModelException {
 	
 	private static final String MESSAGE = "No MetaPackage with name: ''{0}'' exists in the metaModel";
 
+	private static final String message(String name) {
+		return MessageFormat.format(MESSAGE, name);
+	}
+	
 	public MetaPackageDoesNotExist() {
 	}
 
 	public MetaPackageDoesNotExist(String name) {
-		super(MessageFormat.format(MESSAGE, name));
+		super(message(name));
 	}
 
 	public MetaPackageDoesNotExist(Throwable cause) {
@@ -18,12 +22,12 @@ public class MetaPackageDoesNotExist extends MetaModelException {
 	}
 
 	public MetaPackageDoesNotExist(String name, Throwable cause) {
-		super(MessageFormat.format(MESSAGE, name), cause);
+		super(message(name), cause);
 	}
 
 	public MetaPackageDoesNotExist(String name, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
-		super(MessageFormat.format(MESSAGE, name), cause, enableSuppression, writableStackTrace);
+		super(message(name), cause, enableSuppression, writableStackTrace);
 	}
 
 }

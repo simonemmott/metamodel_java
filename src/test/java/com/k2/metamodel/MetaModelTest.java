@@ -244,6 +244,41 @@ public class MetaModelTest {
 		
 	}
 
+	@Test
+	public void test_add_MetaDomain_adds_MetaDomain_to_metaModel() throws MetaModelException {
+		MetaDomain metaDomain = mock(MetaDomain.class);
+		when(metaDomain.getName()).thenReturn("NEW_META_DOMAIN");
+		
+		MetaModel metaModel = new MetaModel();
+		
+		assertFalse(metaModel.metaDomains.values().contains(metaDomain));
+		
+		metaModel.add(metaDomain);
+		
+		assertTrue(metaModel.metaDomains.values().contains(metaDomain));
+			
+	}
+
+	@Test
+	public void test_add_MetaDomain_throws_MetaDomainAlreadyExists() throws MetaModelException {
+		MetaDomain metaDomain = mock(MetaDomain.class);
+		when(metaDomain.getName()).thenReturn("metaDomainB");
+		
+		MetaDomain metaDomainA = mock(MetaDomain.class);
+		MetaDomain metaDomainB = mock(MetaDomain.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaDomains.put("metaDomainA", metaDomainA);
+		metaModel.metaDomains.put("metaDomainB", metaDomainB);
+		
+		exceptionRule.expect(MetaDomainAlreadyExists.class);
+		exceptionRule.expectMessage("A MetaDomain with name: 'metaDomainB' already exists in the metaModel");
+		
+		metaModel.add(metaDomain);
+		
+	}
+
 	
 	
 

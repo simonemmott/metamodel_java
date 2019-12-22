@@ -80,8 +80,12 @@ public class MetaModel {
 
 	public void add(MetaClass metaClass) throws MetaClassAlreadyExists {
 		if (metaClasses.containsKey(metaClass.canonicalClassName())) { throw new MetaClassAlreadyExists(metaClass); }
-		metaClasses.put(metaClass.canonicalClassName(), metaClass);
-		
+		metaClasses.put(metaClass.canonicalClassName(), metaClass);		
+	}
+
+	public void add(MetaDomain metaDomain) throws MetaDomainAlreadyExists {
+		if (metaDomains.containsKey(metaDomain.getName())) { throw new MetaDomainAlreadyExists(metaDomain); }
+		metaDomains.put(metaDomain.getName(), metaDomain);		
 	}
 	
 	
