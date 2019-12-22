@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.k2.metamodel.exception.MetaClassDoesNotExist;
+import com.k2.metamodel.exception.MetaDomainAlreadyExists;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
 import com.k2.metamodel.exception.MetaModelException;
 import com.k2.metamodel.exception.MetaPackageDoesNotExist;
@@ -177,6 +178,35 @@ public class MetaModelTest {
 		
 		metaModel.metaPackage("DOES_NOT_EXIST");
 	}
+	
+	@Test
+	public void test_createDomain_creates_a_new_domain_in_the_metaModel() throws MetaModelException {
+		MetaModel metaModel = new MetaModel();
+
+		metaModel.createDomain("NEW_DOMAIN");
+		
+		MetaDomain result = metaModel.domain("NEW_DOMAIN");
+		
+		assertEquals("NEW_DOMAIN", result.getName());
+	}
+	
+	@Test
+	public void test_createDomain_throws_MetaDomainAlreadyExists() throws MetaModelException {
+		MetaDomain metaDomainA = Mockito.mock(MetaDomain.class);
+		MetaDomain metaDomainB = Mockito.mock(MetaDomain.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaDomains.put("metaDomainA", metaDomainA);
+		metaModel.metaDomains.put("metaDomainB", metaDomainB);
+
+		exceptionRule.expect(MetaDomainAlreadyExists.class);
+		exceptionRule.expectMessage("A MetaDomain with name: 'metaDomainB' already exists in the metaModel");
+		
+		metaModel.createDomain("metaDomainB");
+		
+	}
+
 	
 	
 
