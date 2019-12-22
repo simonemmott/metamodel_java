@@ -1,4 +1,4 @@
-#MetaModel
+# MetaModel
 
 The MetaModel provides access to meta data about classes that are registed with the metamodel
 
