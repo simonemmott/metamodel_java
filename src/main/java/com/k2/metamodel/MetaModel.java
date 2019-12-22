@@ -3,6 +3,8 @@ package com.k2.metamodel;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.k2.metamodel.exception.MetaClassDoesNotExist;
+
 public class MetaModel {
 	
 	String name;
@@ -26,6 +28,14 @@ public class MetaModel {
 	
 	public String getVersion() { return this.version; }
 	public MetaModel setVersion(String version) { this.version = version; return this; }
+
+	public MetaClass metaClass(String name) throws MetaClassDoesNotExist {
+		MetaClass metaClass = metaClasses.get(name);
+		if (metaClass == null) {
+			throw new MetaClassDoesNotExist(name);
+		}
+		return metaClass;
+	}
 	
 
 }
