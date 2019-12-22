@@ -43,4 +43,13 @@ public class MetaDomain {
 		return domainModel;
 	}
 
+	public DomainModel model(Class<?> cls) throws DomainModelDoesNotExist {
+		return model(cls.getCanonicalName());
+	}
+
+	public DomainModel model(MetaClass metaClass) throws DomainModelDoesNotExist {
+		// TODO Auto-generated method stub
+		return model(metaClass.canonicalClassName());
+	}
+
 }

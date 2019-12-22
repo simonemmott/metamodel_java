@@ -96,5 +96,29 @@ public class MetaDomainTest {
 		
 	}
 	
+	@Test
+	public void test_model_with_Class_returns_expected_DomainModel() throws MetaModelException {
+		MetaModel metaModel = mock(MetaModel.class);
+		MetaDomain metaDomain = new MetaDomain(metaModel, "META_DOMAIN");
+		DomainModel integerDomainModel = mock(DomainModel.class);
+		domainModelsField.get(metaDomain).put("java.lang.Integer", integerDomainModel);
+		
+		assertEquals(integerDomainModel, metaDomain.model(Integer.class));
+		
+	}
+	
+	@Test
+	public void test_model_with_MetaClass_returns_expected_DomainModel() throws MetaModelException {
+		MetaModel metaModel = mock(MetaModel.class);
+		MetaDomain metaDomain = new MetaDomain(metaModel, "META_DOMAIN");
+		DomainModel mockDomainModel = mock(DomainModel.class);
+		domainModelsField.get(metaDomain).put("MOCK_CLASS", mockDomainModel);
+		MetaClass metaClass = mock(MetaClass.class);
+		when(metaClass.canonicalClassName()).thenReturn("MOCK_CLASS");
+		
+		assertEquals(mockDomainModel, metaDomain.model(metaClass));
+		
+	}
+	
 
 }
