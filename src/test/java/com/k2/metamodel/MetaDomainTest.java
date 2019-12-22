@@ -160,5 +160,23 @@ public class MetaDomainTest {
 
 	}
 	
+	@Test
+	public void test_add_DomainModel_adds_DomainModel_to_domainModels() throws MetaModelException {
+		MetaModel metaModel = mock(MetaModel.class);
+		MetaDomain metaDomain = new MetaDomain(metaModel, "META_DOMAIN");
+		
+		DomainModel domainModel = mock(DomainModel.class);
+		when(domainModel.canonicalClassName()).thenReturn("DOMAIN_MODEL_CLASS");
+		
+		assertTrue(domainModelsField.get(metaDomain).isEmpty());
+		
+		metaDomain.add(domainModel);
+		
+		assertEquals(1, domainModelsField.get(metaDomain).size());
+		assertTrue(domainModelsField.get(metaDomain).containsKey("DOMAIN_MODEL_CLASS"));
+		assertTrue(domainModelsField.get(metaDomain).containsValue(domainModel));
+		
+	}
+	
 
 }

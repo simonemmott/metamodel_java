@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.k2.metamodel.exception.DomainModelAlreadyExists;
 import com.k2.metamodel.exception.DomainModelDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainAlreadyExists;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
@@ -63,6 +64,13 @@ public class MetaDomain {
 			metaClasses.add(domainModel.getMetaClass());
 		});
 		return metaClasses;
+	}
+
+	public void add(DomainModel domainModel) throws DomainModelAlreadyExists {
+		if (domainModels.containsKey(domainModel.canonicalClassName())) {
+			throw new DomainModelAlreadyExists(domainModel);
+		}
+		domainModels.put(domainModel.canonicalClassName(), domainModel);
 	}
 
 }
