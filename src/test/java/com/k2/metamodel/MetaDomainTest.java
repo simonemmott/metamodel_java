@@ -10,8 +10,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.k2.metamodel.exception.MetaDomainDoesNotExist;
+import com.k2.metamodel.exception.MetaModelException;
 import com.k2.test.utils.PrivateFieldAccessor;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,5 +38,36 @@ public class MetaDomainTest {
 		assertNotNull(domainModelsField.get(metaDomain));
 		
 	}
+	
+	@Test
+	public void test_instance_new_domain() throws MetaModelException {
+		MetaModel metaModel = mock(MetaModel.class);
+		when(metaModel.domain("NEW_DOMAIN")).thenThrow(MetaDomainDoesNotExist.class);
+		
+		MetaDomain newDomain = MetaDomain.instance(metaModel, "NEW_DOMAIN");
+		
+		verify(metaModel, times(1)).domain("NEW_DOMAIN");
+		
+		ArgumentCaptor<MetaDomain> metaDomainCaptor = ArgumentCaptor.forClass(MetaDomain.class);
+		verify(metaModel, times(1)).add(metaDomainCaptor.capture());
+		
+		assertEquals(newDomain, metaDomainCaptor.getValue());
+		
+	}
+	
+	@Test
+	public void test_instance_existing_domain() throws MetaModelException {
+		MetaDomain metaDomain = mock(MetaDomain.class);
+		
+		MetaModel metaModel = mock(MetaModel.class);
+		when(metaModel.domain("EXISTING_DOMAIN")).thenReturn(metaDomain);
+		
+		MetaDomain newDomain = MetaDomain.instance(metaModel, "EXISTING_DOMAIN");
+		
+		verify(metaModel, times(1)).domain("EXISTING_DOMAIN");
+		
+		assertEquals(newDomain, metaDomain);
+	}
+	
 
 }
