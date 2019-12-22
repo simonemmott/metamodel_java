@@ -1,6 +1,7 @@
 package com.k2.metamodel;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.k2.metamodel.exception.MetaClassAlreadyExists;
 import com.k2.metamodel.exception.MetaClassDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainAlreadyExists;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
@@ -39,8 +41,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_metaClass_returns_expected_MetaClass() throws MetaModelException {
-		MetaClass metaClassA = Mockito.mock(MetaClass.class);
-		MetaClass metaClassB = Mockito.mock(MetaClass.class);
+		MetaClass metaClassA = mock(MetaClass.class);
+		MetaClass metaClassB = mock(MetaClass.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -54,8 +56,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_metaClass_throws_MetaClassDoesNotExist() throws MetaModelException {
-		MetaClass metaClassA = Mockito.mock(MetaClass.class);
-		MetaClass metaClassB = Mockito.mock(MetaClass.class);
+		MetaClass metaClassA = mock(MetaClass.class);
+		MetaClass metaClassB = mock(MetaClass.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -71,8 +73,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_metaClass_with_class_returns_expected_MetaClass() throws MetaModelException {
-		MetaClass integer = Mockito.mock(MetaClass.class);
-		MetaClass string = Mockito.mock(MetaClass.class);
+		MetaClass integer = mock(MetaClass.class);
+		MetaClass string = mock(MetaClass.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -87,8 +89,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_metaDomain_returns_expected_MetaDomain() throws MetaModelException {
-		MetaDomain metaDomainA = Mockito.mock(MetaDomain.class);
-		MetaDomain metaDomainB = Mockito.mock(MetaDomain.class);
+		MetaDomain metaDomainA = mock(MetaDomain.class);
+		MetaDomain metaDomainB = mock(MetaDomain.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -102,8 +104,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_metaDomain_throws_MetaDomainDoesNotExist() throws MetaModelException {
-		MetaDomain metaDomainA = Mockito.mock(MetaDomain.class);
-		MetaDomain metaDomainB = Mockito.mock(MetaDomain.class);
+		MetaDomain metaDomainA = mock(MetaDomain.class);
+		MetaDomain metaDomainB = mock(MetaDomain.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -119,8 +121,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_domainNames_returns_set_of_domain_names() {
-		MetaDomain metaDomainA = Mockito.mock(MetaDomain.class);
-		MetaDomain metaDomainB = Mockito.mock(MetaDomain.class);
+		MetaDomain metaDomainA = mock(MetaDomain.class);
+		MetaDomain metaDomainB = mock(MetaDomain.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -134,8 +136,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_metaClasses_returns_set_of_all_metaClass_instances() {
-		MetaClass metaClassA = Mockito.mock(MetaClass.class);
-		MetaClass metaClassB = Mockito.mock(MetaClass.class);
+		MetaClass metaClassA = mock(MetaClass.class);
+		MetaClass metaClassB = mock(MetaClass.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -150,8 +152,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_metaPackage_returns_expected_MetaPackage() throws MetaModelException {
-		MetaPackage metaPackageA = Mockito.mock(MetaPackage.class);
-		MetaPackage metaPackageB = Mockito.mock(MetaPackage.class);
+		MetaPackage metaPackageA = mock(MetaPackage.class);
+		MetaPackage metaPackageB = mock(MetaPackage.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -165,8 +167,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_metaPackage_throws_MetaPackageDoesNotExist() throws MetaModelException {
-		MetaPackage metaPackageA = Mockito.mock(MetaPackage.class);
-		MetaPackage metaPackageB = Mockito.mock(MetaPackage.class);
+		MetaPackage metaPackageA = mock(MetaPackage.class);
+		MetaPackage metaPackageB = mock(MetaPackage.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -192,8 +194,8 @@ public class MetaModelTest {
 	
 	@Test
 	public void test_createDomain_throws_MetaDomainAlreadyExists() throws MetaModelException {
-		MetaDomain metaDomainA = Mockito.mock(MetaDomain.class);
-		MetaDomain metaDomainB = Mockito.mock(MetaDomain.class);
+		MetaDomain metaDomainA = mock(MetaDomain.class);
+		MetaDomain metaDomainB = mock(MetaDomain.class);
 
 		MetaModel metaModel = new MetaModel();
 		
@@ -204,6 +206,41 @@ public class MetaModelTest {
 		exceptionRule.expectMessage("A MetaDomain with name: 'metaDomainB' already exists in the metaModel");
 		
 		metaModel.createDomain("metaDomainB");
+		
+	}
+	
+	@Test
+	public void test_add_MetaClass_adds_MetaClass_to_metaModel() throws MetaModelException {
+		MetaClass metaClass = mock(MetaClass.class);
+		when(metaClass.canonicalClassName()).thenReturn("NEW_META_CLASS");
+		
+		MetaModel metaModel = new MetaModel();
+		
+		assertFalse(metaModel.metaClasses.values().contains(metaClass));
+		
+		metaModel.add(metaClass);
+		
+		assertTrue(metaModel.metaClasses.values().contains(metaClass));
+			
+	}
+
+	@Test
+	public void test_add_MetaClass_throws_MetaClassAlreadyExists() throws MetaModelException {
+		MetaClass metaClass = mock(MetaClass.class);
+		when(metaClass.canonicalClassName()).thenReturn("metaClassB");
+		
+		MetaClass metaClassA = mock(MetaClass.class);
+		MetaClass metaClassB = mock(MetaClass.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaClasses.put("metaClassA", metaClassA);
+		metaModel.metaClasses.put("metaClassB", metaClassB);
+		
+		exceptionRule.expect(MetaClassAlreadyExists.class);
+		exceptionRule.expectMessage("A MetaClass with name: 'metaClassB' already exists in the metaModel");
+		
+		metaModel.add(metaClass);
 		
 	}
 
