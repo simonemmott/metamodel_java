@@ -13,6 +13,8 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.k2.metamodel.exception.DomainModelDoesNotExist;
+import com.k2.metamodel.exception.MetaClassDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
 import com.k2.metamodel.exception.MetaModelException;
 import com.k2.test.utils.PrivateFieldAccessor;
@@ -67,6 +69,31 @@ public class MetaDomainTest {
 		verify(metaModel, times(1)).domain("EXISTING_DOMAIN");
 		
 		assertEquals(newDomain, metaDomain);
+	}
+	
+	@Test
+	public void test_model_with_String_returns_expected_DomainModel() throws MetaModelException {
+		MetaModel metaModel = mock(MetaModel.class);
+		MetaDomain metaDomain = new MetaDomain(metaModel, "META_DOMAIN");
+		DomainModel domainModel = mock(DomainModel.class);
+		domainModelsField.get(metaDomain).put("DOMAIN_MODEL", domainModel);
+		
+		DomainModel result = metaDomain.model("DOMAIN_MODEL");
+		
+		assertEquals(domainModel, result);
+		
+	}
+	
+	@Test
+	public void test_model_with_String_throws_DomainModelDoesNotExist() throws MetaModelException {
+		MetaModel metaModel = mock(MetaModel.class);
+		MetaDomain metaDomain = new MetaDomain(metaModel, "META_DOMAIN");
+		
+		exceptionRule.expect(DomainModelDoesNotExist.class);
+		exceptionRule.expectMessage("No DomainModel with name: 'DOES_NOT_EXIST' exists in the metaDomain");
+		
+		metaDomain.model("DOES_NOT_EXIST");
+		
 	}
 	
 
