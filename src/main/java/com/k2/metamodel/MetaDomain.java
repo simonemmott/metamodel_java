@@ -1,7 +1,9 @@
 package com.k2.metamodel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.k2.metamodel.exception.DomainModelDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainAlreadyExists;
@@ -48,8 +50,19 @@ public class MetaDomain {
 	}
 
 	public DomainModel model(MetaClass metaClass) throws DomainModelDoesNotExist {
-		// TODO Auto-generated method stub
 		return model(metaClass.canonicalClassName());
+	}
+
+	public Set<String> modelNames() {
+		return domainModels.keySet();
+	}
+
+	public Set<MetaClass> metaClasses() {
+		Set<MetaClass> metaClasses = new HashSet<MetaClass>();
+		domainModels.values().forEach(domainModel -> {
+			metaClasses.add(domainModel.getMetaClass());
+		});
+		return metaClasses;
 	}
 
 }

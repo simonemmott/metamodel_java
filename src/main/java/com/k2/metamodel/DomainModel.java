@@ -14,4 +14,8 @@ public class DomainModel {
 		return metaClass.canonicalClassName();
 	}
 
+	public MetaClass getMetaClass() {
+		return metaClass;
+	}
+
 }

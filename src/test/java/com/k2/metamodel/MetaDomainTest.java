@@ -4,7 +4,10 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -118,6 +121,43 @@ public class MetaDomainTest {
 		
 		assertEquals(mockDomainModel, metaDomain.model(metaClass));
 		
+	}
+	
+	@Test
+	public void test_modelNames_returns_set_of_model_names() {
+		MetaModel metaModel = mock(MetaModel.class);
+		MetaDomain metaDomain = new MetaDomain(metaModel, "META_DOMAIN");
+		DomainModel domainModelA = mock(DomainModel.class);
+		DomainModel domainModelB = mock(DomainModel.class);
+		domainModelsField.get(metaDomain).put("DOMAIN_MODEL_A", domainModelA);
+		domainModelsField.get(metaDomain).put("DOMAIN_MODEL_B", domainModelB);
+		
+		Set<String> expected = new HashSet<>(Arrays.asList("DOMAIN_MODEL_A", "DOMAIN_MODEL_B"));
+		
+		assertEquals(expected, metaDomain.modelNames());
+		
+	}
+	
+	@Test
+	public void test_metaClasses_returns_set_of_all_MetaClasses_in_metaDomain() {
+		MetaModel metaModel = mock(MetaModel.class);
+		MetaDomain metaDomain = new MetaDomain(metaModel, "META_DOMAIN");
+		
+		DomainModel domainModelA = mock(DomainModel.class);
+		MetaClass metaClassA = mock(MetaClass.class);
+		when(domainModelA.getMetaClass()).thenReturn(metaClassA);
+		
+		DomainModel domainModelB = mock(DomainModel.class);
+		MetaClass metaClassB = mock(MetaClass.class);
+		when(domainModelB.getMetaClass()).thenReturn(metaClassB);
+
+		domainModelsField.get(metaDomain).put("DOMAIN_MODEL_A", domainModelA);
+		domainModelsField.get(metaDomain).put("DOMAIN_MODEL_B", domainModelB);
+		
+		Set<MetaClass> expected = new HashSet<>(Arrays.asList(metaClassA, metaClassB));
+		
+		assertEquals(expected, metaDomain.metaClasses());
+
 	}
 	
 
