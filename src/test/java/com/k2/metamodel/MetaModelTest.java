@@ -3,7 +3,6 @@ package com.k2.metamodel;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +11,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.k2.metamodel.exception.MetaClassAlreadyExists;

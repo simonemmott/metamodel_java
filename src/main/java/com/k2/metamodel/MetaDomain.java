@@ -1,13 +1,18 @@
 package com.k2.metamodel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MetaDomain {
 	
-	String name;
-	MetaModel metaModel;
+	final String name;
+	final MetaModel metaModel;
+	final Map<String,DomainModel> domainModels;
 	
-	private MetaDomain(MetaModel metaModel, String name) {
+	MetaDomain(MetaModel metaModel, String name) {
 		this.metaModel = metaModel;
 		this.name = name;
+		this.domainModels = new HashMap<>();
 	}
 
 	public String getName() { return this.name; }
