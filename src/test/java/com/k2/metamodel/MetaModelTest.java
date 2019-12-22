@@ -125,9 +125,27 @@ public class MetaModelTest {
 		metaModel.metaDomains.put("metaDomainA", metaDomainA);
 		metaModel.metaDomains.put("metaDomainB", metaDomainB);
 		
-		Set<String> expected = new HashSet<String>(Arrays.asList("metaDomainA", "metaDomainB"));
+		Set<String> expected = new HashSet<>(Arrays.asList("metaDomainA", "metaDomainB"));
 		
 		assertEquals(expected, metaModel.domainNames());
+	}
+	
+	@Test
+	public void test_metaClasses_returns_set_of_all_metaClass_instances() {
+		MetaClass metaClassA = Mockito.mock(MetaClass.class);
+		MetaClass metaClassB = Mockito.mock(MetaClass.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaClasses.put("metaClassA", metaClassA);
+		metaModel.metaClasses.put("metaClassB", metaClassB);
+		
+		Set<MetaClass> expected = new HashSet<>(Arrays.asList(metaClassA, metaClassB));
+		
+		assertEquals(expected, metaModel.metaClasses());
+		
+		
+		
 	}
 	
 	
