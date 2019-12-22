@@ -3,6 +3,9 @@ package com.k2.metamodel;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -110,6 +113,21 @@ public class MetaModelTest {
 		
 		metaModel.domain("DOES_NOT_EXIST");
 
+	}
+	
+	@Test
+	public void test_domainNames_returns_set_of_domain_names() {
+		MetaDomain metaDomainA = Mockito.mock(MetaDomain.class);
+		MetaDomain metaDomainB = Mockito.mock(MetaDomain.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaDomains.put("metaDomainA", metaDomainA);
+		metaModel.metaDomains.put("metaDomainB", metaDomainB);
+		
+		Set<String> expected = new HashSet<String>(Arrays.asList("metaDomainA", "metaDomainB"));
+		
+		assertEquals(expected, metaModel.domainNames());
 	}
 	
 	

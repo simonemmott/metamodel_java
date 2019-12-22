@@ -2,6 +2,7 @@ package com.k2.metamodel;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.k2.metamodel.exception.MetaClassDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
@@ -16,9 +17,9 @@ public class MetaModel {
 	Map<String,MetaPackage> metaPackages;
 	
 	public MetaModel() {
-		metaDomains = new HashMap<String, MetaDomain>();
-		metaClasses = new HashMap<String, MetaClass>();
-		metaPackages = new HashMap<String, MetaPackage>();
+		metaDomains = new HashMap<>();
+		metaClasses = new HashMap<>();
+		metaPackages = new HashMap<>();
 	}
 
 	public String getName() { return this.name; }
@@ -49,6 +50,10 @@ public class MetaModel {
 			throw new MetaDomainDoesNotExist(name);
 		}
 		return metaDomain;
+	}
+
+	public Set<String> domainNames() {
+		return metaDomains.keySet();
 	}
 	
 	
