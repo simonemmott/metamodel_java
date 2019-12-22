@@ -43,7 +43,7 @@ public class MetaModel {
 		return metaClass(cls.getCanonicalName());
 	}
 
-	public MetaDomain metaDomain(String name) throws MetaDomainDoesNotExist {
+	public MetaDomain domain(String name) throws MetaDomainDoesNotExist {
 		MetaDomain metaDomain = metaDomains.get(name);
 		if (metaDomain == null) {
 			throw new MetaDomainDoesNotExist(name);
