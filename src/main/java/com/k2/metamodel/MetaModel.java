@@ -9,6 +9,7 @@ import com.k2.metamodel.exception.MetaClassAlreadyExists;
 import com.k2.metamodel.exception.MetaClassDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainAlreadyExists;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
+import com.k2.metamodel.exception.MetaPackageAlreadyExists;
 import com.k2.metamodel.exception.MetaPackageDoesNotExist;
 
 public class MetaModel {
@@ -86,6 +87,11 @@ public class MetaModel {
 	public void add(MetaDomain metaDomain) throws MetaDomainAlreadyExists {
 		if (metaDomains.containsKey(metaDomain.getName())) { throw new MetaDomainAlreadyExists(metaDomain); }
 		metaDomains.put(metaDomain.getName(), metaDomain);		
+	}
+
+	public void add(MetaPackage metaPackage) throws MetaPackageAlreadyExists {
+		if (metaPackages.containsKey(metaPackage.getPackageName())) { throw new MetaPackageAlreadyExists(metaPackage); }
+		metaPackages.put(metaPackage.getPackageName(), metaPackage);		
 	}
 	
 	

@@ -20,6 +20,7 @@ import com.k2.metamodel.exception.MetaClassDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainAlreadyExists;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
 import com.k2.metamodel.exception.MetaModelException;
+import com.k2.metamodel.exception.MetaPackageAlreadyExists;
 import com.k2.metamodel.exception.MetaPackageDoesNotExist;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -276,6 +277,41 @@ public class MetaModelTest {
 		exceptionRule.expectMessage("A MetaDomain with name: 'metaDomainB' already exists in the metaModel");
 		
 		metaModel.add(metaDomain);
+		
+	}
+
+	@Test
+	public void test_add_MetaPackage_adds_MetaPackage_to_metaModel() throws MetaModelException {
+		MetaPackage metaPackage = mock(MetaPackage.class);
+		when(metaPackage.getPackageName()).thenReturn("NEW_META_PACKAGE");
+		
+		MetaModel metaModel = new MetaModel();
+		
+		assertFalse(metaModel.metaPackages.values().contains(metaPackage));
+		
+		metaModel.add(metaPackage);
+		
+		assertTrue(metaModel.metaPackages.values().contains(metaPackage));
+			
+	}
+
+	@Test
+	public void test_add_MetaPackage_throws_MetaPackageAlreadyExists() throws MetaModelException {
+		MetaPackage metaPackage = mock(MetaPackage.class);
+		when(metaPackage.getPackageName()).thenReturn("metaPackageB");
+		
+		MetaPackage metaPackageA = mock(MetaPackage.class);
+		MetaPackage metaPackageB = mock(MetaPackage.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaPackages.put("metaPackageA", metaPackageA);
+		metaModel.metaPackages.put("metaPackageB", metaPackageB);
+		
+		exceptionRule.expect(MetaPackageAlreadyExists.class);
+		exceptionRule.expectMessage("A MetaPackage with name: 'metaPackageB' already exists in the metaModel");
+		
+		metaModel.add(metaPackage);
 		
 	}
 
