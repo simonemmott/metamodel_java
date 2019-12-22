@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.k2.metamodel.exception.DomainModelAlreadyExists;
 import com.k2.metamodel.exception.DomainModelDoesNotExist;
 import com.k2.metamodel.exception.MetaClassDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
@@ -175,6 +176,24 @@ public class MetaDomainTest {
 		assertEquals(1, domainModelsField.get(metaDomain).size());
 		assertTrue(domainModelsField.get(metaDomain).containsKey("DOMAIN_MODEL_CLASS"));
 		assertTrue(domainModelsField.get(metaDomain).containsValue(domainModel));
+		
+	}
+	
+	@Test
+	public void test_add_DomainModel_throws_DomainModelAlreadyExists() throws MetaModelException {
+		MetaModel metaModel = mock(MetaModel.class);
+		MetaDomain metaDomain = new MetaDomain(metaModel, "META_DOMAIN");
+		
+		DomainModel existingDomainModel = mock(DomainModel.class);
+		domainModelsField.get(metaDomain).put("EXISTING_DOMAIN_MODEL", existingDomainModel);
+		
+		DomainModel domainModel = mock(DomainModel.class);
+		when(domainModel.canonicalClassName()).thenReturn("EXISTING_DOMAIN_MODEL");
+		
+		exceptionRule.expect(DomainModelAlreadyExists.class);
+		exceptionRule.expectMessage("DomainModel with name: 'EXISTING_DOMAIN_MODEL' already exists in the metaDomain");
+		
+		metaDomain.add(domainModel);
 		
 	}
 	
