@@ -10,7 +10,8 @@ public class PrivateFieldAccessor <T,F>{
 
 	public PrivateFieldAccessor(Class<T> cls, String name, Class<F> returnType) {
 		try {
-			this.field = MetaDomain.class.getDeclaredField(name);
+			System.out.println();
+			this.field = cls.getDeclaredField(name);
 			this.field.setAccessible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
