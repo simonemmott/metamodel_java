@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.k2.metamodel.exception.MetaClassDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
 import com.k2.metamodel.exception.MetaModelException;
+import com.k2.metamodel.exception.MetaPackageDoesNotExist;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MetaModelTest {
@@ -144,8 +145,37 @@ public class MetaModelTest {
 		
 		assertEquals(expected, metaModel.metaClasses());
 		
+	}
+	
+	@Test
+	public void test_metaPackage_returns_expected_MetaPackage() throws MetaModelException {
+		MetaPackage metaPackageA = Mockito.mock(MetaPackage.class);
+		MetaPackage metaPackageB = Mockito.mock(MetaPackage.class);
+
+		MetaModel metaModel = new MetaModel();
 		
+		metaModel.metaPackages.put("metaPackageA", metaPackageA);
+		metaModel.metaPackages.put("metaPackageB", metaPackageB);
 		
+		assertEquals(metaPackageA, metaModel.metaPackage("metaPackageA"));
+		assertEquals(metaPackageB, metaModel.metaPackage("metaPackageB"));
+		
+	}
+	
+	@Test
+	public void test_metaPackage_throws_MetaPackageDoesNotExist() throws MetaModelException {
+		MetaPackage metaPackageA = Mockito.mock(MetaPackage.class);
+		MetaPackage metaPackageB = Mockito.mock(MetaPackage.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaPackages.put("metaPackageA", metaPackageA);
+		metaModel.metaPackages.put("metaPackageB", metaPackageB);
+		
+		exceptionRule.expect(MetaPackageDoesNotExist.class);
+		exceptionRule.expectMessage("No MetaPackage with name: 'DOES_NOT_EXIST' exists in the metaModel");
+		
+		metaModel.metaPackage("DOES_NOT_EXIST");
 	}
 	
 	

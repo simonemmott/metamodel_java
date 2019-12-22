@@ -1,11 +1,13 @@
 package com.k2.metamodel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import com.k2.metamodel.exception.MetaClassDoesNotExist;
 import com.k2.metamodel.exception.MetaDomainDoesNotExist;
+import com.k2.metamodel.exception.MetaPackageDoesNotExist;
 
 public class MetaModel {
 	
@@ -54,6 +56,18 @@ public class MetaModel {
 
 	public Set<String> domainNames() {
 		return metaDomains.keySet();
+	}
+
+	public Set<MetaClass> metaClasses() {
+		return new HashSet<MetaClass>(metaClasses.values());
+	}
+
+	public MetaPackage metaPackage(String name) throws MetaPackageDoesNotExist {
+		MetaPackage metaPackage = metaPackages.get(name);
+		if (metaPackage == null) {
+			throw new MetaPackageDoesNotExist(name);
+		}
+		return metaPackage;
 	}
 	
 	
