@@ -62,6 +62,22 @@ public class MetaModelTest {
 
 	}
 	
+	@Test
+	public void test_metaClass_with_class_returns_expected_MetaClass() throws MetaModelException {
+		MetaClass integer = Mockito.mock(MetaClass.class);
+		MetaClass string = Mockito.mock(MetaClass.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaClasses.put("java.lang.Integer", integer);
+		metaModel.metaClasses.put("java.lang.String", string);
+		
+		assertEquals(integer, metaModel.metaClass(Integer.class));
+		assertEquals(string, metaModel.metaClass(String.class));
+		
+		
+	}
+	
 	
 
 }

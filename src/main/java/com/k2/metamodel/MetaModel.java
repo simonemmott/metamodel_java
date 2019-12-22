@@ -36,6 +36,13 @@ public class MetaModel {
 		}
 		return metaClass;
 	}
+
+	public MetaClass metaClass(Class<?> cls) throws MetaClassDoesNotExist {
+		
+		return metaClass(cls.getCanonicalName());
+	}
+	
+	
 	
 
 }
