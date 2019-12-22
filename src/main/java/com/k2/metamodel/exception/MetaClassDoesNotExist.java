@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 public class MetaClassDoesNotExist extends MetaModelException {
 	
-	private static final String MESSAGE = "No MetaClass with name '{0}' exists in the metaModel";
+	private static final String MESSAGE = "No MetaClass with name: ''{0}'' exists in the metaModel";
 
 	public MetaClassDoesNotExist() {
 	}

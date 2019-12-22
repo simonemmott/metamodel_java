@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.k2.metamodel.exception.MetaClassDoesNotExist;
+import com.k2.metamodel.exception.MetaDomainDoesNotExist;
 
 public class MetaModel {
 	
@@ -40,6 +41,14 @@ public class MetaModel {
 	public MetaClass metaClass(Class<?> cls) throws MetaClassDoesNotExist {
 		
 		return metaClass(cls.getCanonicalName());
+	}
+
+	public MetaDomain metaDomain(String name) throws MetaDomainDoesNotExist {
+		MetaDomain metaDomain = metaDomains.get(name);
+		if (metaDomain == null) {
+			throw new MetaDomainDoesNotExist(name);
+		}
+		return metaDomain;
 	}
 	
 	

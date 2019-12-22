@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.k2.metamodel.exception.MetaClassDoesNotExist;
+import com.k2.metamodel.exception.MetaDomainDoesNotExist;
 import com.k2.metamodel.exception.MetaModelException;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -57,6 +58,7 @@ public class MetaModelTest {
 		metaModel.metaClasses.put("metaClassB", metaClassB);
 		
 		exceptionRule.expect(MetaClassDoesNotExist.class);
+		exceptionRule.expectMessage("No MetaClass with name: 'DOES_NOT_EXIST' exists in the metaModel");
 		
 		metaModel.metaClass("DOES_NOT_EXIST");
 
@@ -76,6 +78,38 @@ public class MetaModelTest {
 		assertEquals(string, metaModel.metaClass(String.class));
 		
 		
+	}
+	
+	@Test
+	public void test_metaDomain_returns_expected_MetaDomain() throws MetaModelException {
+		MetaDomain metaDomainA = Mockito.mock(MetaDomain.class);
+		MetaDomain metaDomainB = Mockito.mock(MetaDomain.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaDomains.put("metaDomainA", metaDomainA);
+		metaModel.metaDomains.put("metaDomainB", metaDomainB);
+		
+		assertEquals(metaDomainA, metaModel.domain("metaDomainA"));
+		assertEquals(metaDomainB, metaModel.domain("metaDomainB"));
+		
+	}
+	
+	@Test
+	public void test_metaDomain_throws_MetaDomainDoesNotExist() throws MetaModelException {
+		MetaDomain metaDomainA = Mockito.mock(MetaDomain.class);
+		MetaDomain metaDomainB = Mockito.mock(MetaDomain.class);
+
+		MetaModel metaModel = new MetaModel();
+		
+		metaModel.metaDomains.put("metaDomainA", metaDomainA);
+		metaModel.metaDomains.put("metaDomainB", metaDomainB);
+		
+		exceptionRule.expect(MetaDomainDoesNotExist.class);
+		exceptionRule.expectMessage("No MetaDomain with name: 'DOES_NOT_EXIST' exists in the metaModel");
+		
+		metaModel.domain("DOES_NOT_EXIST");
+
 	}
 	
 	
